@@ -4,8 +4,6 @@ import time
 
 arduino = serial.Serial('/dev/cu.usbmodem11101', 115200)
 
-arduino.write(b'<90,90>')
-
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 cap = cv2.VideoCapture(0)
@@ -17,8 +15,6 @@ frame_center_y = 720 // 2
 
 error_threshold = 10
 scan_speed = 2
-pan_pos = 90
-pan_dir = 1
 
 while True:
     _, img = cap.read()
@@ -37,16 +33,6 @@ while True:
             if abs(error_x) > error_threshold or abs(error_y) > error_threshold:
                 arduino.write(f'<{error_x},{error_y}>'.encode())
             break
-    else:
-        # No faces detected, scan horizontally
-        pan_pos += scan_speed * pan_dir
-        if pan_pos > 150:
-            pan_pos = 150
-            pan_dir = -1
-        elif pan_pos < 30:
-            pan_pos = 30
-            pan_dir = 1
-        arduino.write(f'<{pan_pos},90>'.encode())
 
     # Display
     cv2.imshow('img', img)
