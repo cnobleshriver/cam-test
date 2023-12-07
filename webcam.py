@@ -2,18 +2,17 @@ import cv2
 import serial
 import time
 
-arduino = serial.Serial('/dev/cu.usbmodem11101', 115200)
+arduino = serial.Serial('/dev/cu.usbmodem1401', 115200)
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-
 frame_center_x = 1280 // 2
 frame_center_y = 720 // 2
 
-error_threshold = 25
+error_threshold = 20
 scan_speed = 2
 
 while True:
@@ -32,8 +31,8 @@ while True:
 
             if abs(error_x) > error_threshold or abs(error_y) > error_threshold:
                 arduino.write(f'<{error_x},{error_y}>'.encode())
-            # else:
-            #     arduino.write(b'fire>')
+            else:
+                arduino.write(b'fire>')
             break
 
     # Display
