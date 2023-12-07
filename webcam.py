@@ -13,7 +13,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 frame_center_x = 1280 // 2
 frame_center_y = 720 // 2
 
-error_threshold = 10
+error_threshold = 25
 scan_speed = 2
 
 while True:
@@ -32,6 +32,8 @@ while True:
 
             if abs(error_x) > error_threshold or abs(error_y) > error_threshold:
                 arduino.write(f'<{error_x},{error_y}>'.encode())
+            # else:
+            #     arduino.write(b'fire>')
             break
 
     # Display
