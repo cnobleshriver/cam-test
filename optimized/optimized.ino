@@ -47,8 +47,8 @@ void loop() {
     if (x_byte == 255 && y_byte == 255) { // Unique signal for fire command
       fire();
     } else {
-      panPos = x_byte;
-      tiltPos = y_byte;
+      panPos =+ x_byte;
+      tiltPos =+ y_byte;
 
       panPos = constrain(panPos, 0, 180);
       tiltPos = constrain(tiltPos, 80, 110);

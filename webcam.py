@@ -2,7 +2,7 @@ import cv2
 import serial
 import time
 
-arduino = serial.Serial('/dev/cu.usbmodem1101', 9600)
+arduino = serial.Serial('/dev/cu.usbmodem11101', 115200)
 
 arduino.write(b'<90,90>')
 

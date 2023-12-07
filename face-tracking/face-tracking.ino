@@ -13,6 +13,8 @@ Servo reloadServo;
 
 int panPos = 90; // Initial pan position
 int tiltPos = 90; // Initial tilt position
+unsigned long lastFireTime = 0;
+bool isFiring = false;
 
 void setup() {
   panServo.attach(PANSERVO);
@@ -24,16 +26,27 @@ void setup() {
   reloadServo.write(restAngle);
   
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
+
+//void fire() {
+//  reloadServo.write(loadAngle);
+//  delay(500);
+//  reloadServo.write(restAngle);
+//  delay(500);
+//}
+
 
 void fire() {
-  reloadServo.write(loadAngle);
-  delay(500);
-  reloadServo.write(restAngle);
-  delay(500);
+  if (!isFiring) {
+    reloadServo.write(loadAngle);
+    lastFireTime = millis();
+    isFiring = true;
+  } else if (millis() - lastFireTime > 500) {
+    reloadServo.write(restAngle);
+    isFiring = false;
+  }
 }
-
 void loop() {
   if (Serial.available()) {
     String input = Serial.readStringUntil('>');
@@ -58,5 +71,8 @@ void loop() {
         tiltServo.write(tiltPos);
       }
     }
+  }
+    if (isFiring) {
+    fire(); // Check if firing is complete
   }
 }

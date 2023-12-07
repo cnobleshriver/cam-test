@@ -3,7 +3,9 @@ import serial
 import struct
 import time
 
-arduino = serial.Serial('/dev/cu.usbmodem1101', 115200)
+arduino = serial.Serial('/dev/cu.usbmodem11101', 115200)
+
+arduino.write(b'<90,90>')
 
 def send_command(x=None, y=None, fire=False):
     if fire:
